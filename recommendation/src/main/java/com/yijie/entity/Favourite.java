@@ -14,7 +14,7 @@ import java.util.Set;
 public class Favourite {
     @Data
     private class ItemInfo{
-        String description;
+        String STATUS;
         Item item;
     }
     @Id
@@ -33,7 +33,7 @@ public class Favourite {
 
         ItemInfo itemInfo = new ItemInfo();
         itemInfo.item = item;
-        itemInfo.description = item == null ? "Not Found!" : "Active!";
+        itemInfo.STATUS = item == null ? "Expired" : "Active";
         items.put(itemId, itemInfo);
     }
 

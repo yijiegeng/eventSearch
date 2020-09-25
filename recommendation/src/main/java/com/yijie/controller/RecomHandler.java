@@ -61,7 +61,7 @@ public class RecomHandler {
                                @PathVariable("term") String term){
 
 
-        List<Item> items = geoRecommendation.getItems(lat, lon, null, null,null);
+        List<Item> items = geoRecommendation.getItems(lat, lon, null, null,null, null);
         return items;
     }
 
