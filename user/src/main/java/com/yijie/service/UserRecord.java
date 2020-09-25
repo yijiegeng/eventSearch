@@ -4,9 +4,9 @@ import com.yijie.entity.FavItem;
 import com.yijie.entity.Favourite;
 import com.yijie.entity.Item;
 import com.yijie.entity.User;
+import com.yijie.feign.SearchByIdFeign;
 import com.yijie.repository.FavItemRepository;
 import com.yijie.repository.FavRepository;
-import com.yijie.repository.ItemRepository;
 import com.yijie.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,9 @@ public class UserRecord {
     @Autowired
     private FavRepository favRepository;
     @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
     private FavItemRepository favItemRepository;
-
+    @Autowired
+    private SearchByIdFeign searchByIdFeign;
 
     public List<User> findAll(){
         return userRepository.findAll();
@@ -46,7 +45,6 @@ public class UserRecord {
     public void deleteById(String id){
         userRepository.deleteById(id);
         favRepository.deleteById(id);
-
     }
 
     /**
@@ -65,12 +63,14 @@ public class UserRecord {
         Optional<Favourite> recordStatus = favRepository.findById(userId);
         if(!recordStatus.isPresent()) return null;
 
-        // Check item status
-        Optional<Item> itemStatus = itemRepository.findById(itemId);
+        /**
+         * Call feign to search event by ID
+         */
         Item item;
-        // If get a itemId which not exist in DB
-        if(!itemStatus.isPresent()) item = null;
-        else item = itemStatus.get();
+        List<Item> searchRes = searchByIdFeign.getItemsById(itemId);
+        if(searchRes == null || searchRes.size() == 0) item = null;
+        else item = searchRes.get(0);
+
 
         // Save favourite record in "fav" table
         Favourite record = recordStatus.get();

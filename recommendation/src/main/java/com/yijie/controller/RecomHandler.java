@@ -25,6 +25,7 @@ public class RecomHandler {
                                      @PathVariable("lon") double lon,
                                      @PathVariable("user_id") String userId) {
         return geoRecommendation.recommendItems(userId, lat, lon, "0", "0");
+        // CANNOT pass "null" because this type cannot be passed to another service
     }
 
     /**
@@ -34,6 +35,7 @@ public class RecomHandler {
     public List<Item> recommendByState(@PathVariable("state_code") String stateCode,
                                      @PathVariable("user_id") String userId) {
         return geoRecommendation.recommendItems(userId, 0.0, 0.0, stateCode, "0");
+        // CANNOT pass "null" because this type cannot be passed to another service
     }
 
 
@@ -44,6 +46,7 @@ public class RecomHandler {
     public List<Item> recommendByCity(@PathVariable("city") String city,
                                      @PathVariable("user_id") String userId) {
         return geoRecommendation.recommendItems(userId, 0.0, 0.0, "0", city);
+        // CANNOT pass "null" because this type cannot be passed to another service
     }
 
 

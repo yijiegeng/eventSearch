@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.thoughtworks.xstream.mapper.Mapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -202,23 +201,23 @@ public class TicketMasterAPI {
 
 
     ///////////////// lat + lon  -->   JSONArray
-    public List<Item> search(Double lat, Double lon, String keyword, String stateCode, String city) {
+    public List<Item> search(Double lat, Double lon, String keyword, String stateCode, String city, String id) {
 
-
+        id = check(id);
         keyword = check(keyword);
         stateCode = check(stateCode);
         city = check(city);
 
         // call GeoHash function -> get hashCode
         String geoHash = "";
-        if(stateCode == "" && city == "")
+        if(stateCode == "" && city == "" && id == "")
             geoHash = GeoHash.encodeGeohash(lat, lon, 8);
 
         int size = 50;
         if(keyword != "") size = 30;
 
         // finish query in that format
-        String query = String.format("apikey=%s&geoPoint=%s&classificationName=%s&stateCode=%s&city=%s&radius=%s&size=%s", API_KEY, geoHash, keyword, stateCode, city, 50, size);
+        String query = String.format("apikey=%s&geoPoint=%s&classificationName=%s&stateCode=%s&city=%s&radius=%s&size=%s&id=%s", API_KEY, geoHash, keyword, stateCode, city, 50, size, id);
 
         // create connection
         try {
@@ -271,7 +270,7 @@ public class TicketMasterAPI {
      *  use for debug
      */
     private void queryAPI(double lat, double lon) {
-        List<Item> events = search(lat, lon, null, null, null);
+        List<Item> events = search(lat, lon, null, null, null, null);
         try {
 //		    for (int i = 0; i < events.size(); i++) {
 //		        Item event = events.get(i);
