@@ -1,0 +1,6 @@
+	kill -9 $(lsof -i tcp:8761 -t)
+	kill -9 $(lsof -i tcp:8762 -t)
+	kill -9 $(lsof -i tcp:8010 -t)
+	kill -9 $(lsof -i tcp:8020 -t)
+	kill -9 $(lsof -i tcp:8030 -t)
+	kill -9 $(lsof -i tcp:8040 -t)

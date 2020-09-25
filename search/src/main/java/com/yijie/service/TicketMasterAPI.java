@@ -23,6 +23,7 @@ public class TicketMasterAPI {
     private static final String URL = "http://app.ticketmaster.com/discovery/v2/events.json";
     // default keyword
     private static final String DEFAULT_VALUE = "";
+    private static final Integer DEFAULT_SIZE = 50;
 
     // account keyword
     private static final String API_KEY = "oCjfH7tovu3ikA0oJFozQ0b3CGPESVc8";
@@ -164,8 +165,8 @@ public class TicketMasterAPI {
                 builder.setUrl(event.getString("url"));
             }
 
-            if (!event.isNull("rating")) {
-                builder.setRating(event.getDouble("rating"));
+            if (!event.isNull("description")) {
+                builder.setDescription(event.getString("description"));
             }
 
             if (!event.isNull("distance")) {
@@ -201,7 +202,7 @@ public class TicketMasterAPI {
 
 
     ///////////////// lat + lon  -->   JSONArray
-    public List<Item> search(Double lat, Double lon, String keyword, String stateCode, String city, String id) {
+    public List<Item> search(Double lat, Double lon, String keyword, String stateCode, String city, String id, Integer size) {
 
         id = check(id);
         keyword = check(keyword);
@@ -213,11 +214,10 @@ public class TicketMasterAPI {
         if(stateCode == "" && city == "" && id == "")
             geoHash = GeoHash.encodeGeohash(lat, lon, 8);
 
-        int size = 50;
-        if(keyword != "") size = 30;
+        if(size == null) size = DEFAULT_SIZE;
 
         // finish query in that format
-        String query = String.format("apikey=%s&geoPoint=%s&classificationName=%s&stateCode=%s&city=%s&radius=%s&size=%s&id=%s", API_KEY, geoHash, keyword, stateCode, city, 50, size, id);
+        String query = String.format("apikey=%s&geoPoint=%s&classificationName=%s&stateCode=%s&city=%s&radius=%s&id=%s&size=%s", API_KEY, geoHash, keyword, stateCode, city, 100, id, size);
 
         // create connection
         try {
@@ -270,7 +270,7 @@ public class TicketMasterAPI {
      *  use for debug
      */
     private void queryAPI(double lat, double lon) {
-        List<Item> events = search(lat, lon, null, null, null, null);
+        List<Item> events = search(lat, lon, null, null, null, null, null);
         try {
 //		    for (int i = 0; i < events.size(); i++) {
 //		        Item event = events.get(i);

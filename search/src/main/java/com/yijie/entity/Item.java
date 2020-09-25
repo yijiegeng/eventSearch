@@ -1,7 +1,5 @@
 package com.yijie.entity;
 
-import java.util.Set;
-
 import lombok.Data;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,13 +7,15 @@ import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Set;
+
 @Data
 @Document(collection = "items")
 public class Item {
     @Id
     private String itemId;
     private String name;
-    private double rating;
+    private String description;
     private String address;
     private Set<String> categories;
     private String imageUrl;
@@ -29,8 +29,8 @@ public class Item {
     public String getName() {
         return name;
     }
-    public double getRating() {
-        return rating;
+    public String getDescription() {
+        return description;
     }
     public String getAddress() {
         return address;
@@ -53,7 +53,7 @@ public class Item {
         try {
             obj.put("item_id", itemId);
             obj.put("name", name);
-            obj.put("rating", rating);
+            obj.put("description", description);
             obj.put("address", address);
             obj.put("categories", new JSONArray(categories));
             obj.put("image_url", imageUrl);
@@ -75,8 +75,8 @@ public class Item {
         public void setName(String name) {
             this.name = name;
         }
-        public void setRating(double rating) {
-            this.rating = rating;
+        public void setDescription(String description) {
+            this.description = description;
         }
         public void setAddress(String address) {
             this.address = address;
@@ -96,7 +96,7 @@ public class Item {
 
         private String itemId;
         private String name;
-        private double rating;
+        private String description;
         private String address;
         private Set<String> categories;
         private String imageUrl;
@@ -115,7 +115,7 @@ public class Item {
     private Item(ItemBuilder builder) {
         this.itemId = builder.itemId;
         this.name = builder.name;
-        this.rating = builder.rating;
+        this.description = builder.description;
         this.address = builder.address;
         this.categories = builder.categories;
         this.imageUrl = builder.imageUrl;

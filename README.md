@@ -7,73 +7,74 @@
 
   
 
-## Version 2.0	--	modified the database table
+## Version 3.0	--	modified the recommendation algorithm
+
+
 
 ### Recomendation algorithm
 
-* Using the user's favorite records and find out all the categories that the user likes. According to **their preference**, search for similar events and recommend them to the user. 
-* Sort the recomendation events by according to **how much users like the category**.
-* If call recommendation based on **geo-location**, then sort the recomendation events in same category by **distance**.
+* Using the user's favorite records and find out all the categories that the user likes. According to the **proportion** of each category in the total number, search for similar events and recommend them to users.
+* If call recommendation based on **geo-location**， then sort the recomendation events by **distance**.
 
-### Data Base : MongoDB
+* ### Data Base : MongoDB
 
-* `users`: Stored  all user's persional information
+  * `users`: Stored  all user's persional information
 
-  ```json
-  {
-      "userId": "5f6bdea318d55516a3871a72",
-      "firstName": "xxxx",
-      "lastName": "xxxx",
-      "password": "123"
-  }
-  ```
+    ```json
+    {
+        "userId": "5f6bdea318d55516a3871a72",
+        "firstName": "xxxx",
+        "lastName": "xxxx",
+        "password": "123"
+    }
+    ```
 
-* `fav_items`: Stored all events that **favourited** by the user
+  * `fav_items`: Stored all events that **favourited** by the user
 
-  ```json
-  {
-  	"itemId": "vv1AaZAqAGkdPXfSW",
-      "info": {
-          "itemId": "vv1AaZAqAGkdPXfSW",
-                  "name": "Eagles",
-                  "description": null,
-                  "address": "3900 W Manchester Blvd. Inglewood",
-                  "categories": ["Music"],
-                  "imageUrl": "https://s1.ticketm.net/dam/a/c40/e0f4dedd-b435-4b8b-8fd0-e73e47e93c40_851341_CUSTOM.jpg",
-                  "url": "https://www.ticketmaster.com/eagles-inglewood-california-10-16-2021/event/09005745E5F94CFD",
-                  "distance": 0.0
-      },
-      "hitUsers": ["5f6bdea318d55516a3871a72", "5f6bdec418d55516a3871a73"],
-      "hit": 2
-  }
-  ```
+    ```json
+    {
+    	"itemId": "vv1AaZAqAGkdPXfSW",
+        "info": {
+            "itemId": "vv1AaZAqAGkdPXfSW",
+                    "name": "Eagles",
+                    "description": null,
+                    "address": "3900 W Manchester Blvd. Inglewood",
+                    "categories": ["Music"],
+                    "imageUrl": "https://s1.ticketm.net/dam/a/c40/e0f4dedd-b435-4b8b-8fd0-e73e47e93c40_851341_CUSTOM.jpg",
+                    "url": "https://www.ticketmaster.com/eagles-inglewood-california-10-16-2021/event/09005745E5F94CFD",
+                    "distance": 0.0
+        },
+        "hitUsers": ["5f6bdea318d55516a3871a72", "5f6bdec418d55516a3871a73"],
+        "hit": 2
+    }
+    ```
 
-  
+    
 
-* `fav` : Stored all favourite record of each user :
+  * `fav` : Stored all favourite record of each user :
 
-  ```json
-  {
-      "userId": "5f6bdea318d55516a3871a72",
-      "firstName": "yijie",
-      "items": {
-          "vv1AaZAqAGkdPXfSW": {
-              "description": "Active!",
-              "item": {
-                  "itemId": "vv1AaZAqAGkdPXfSW",
-                  "name": "Eagles",
-                  "description": null,
-                  "address": "3900 W Manchester Blvd. Inglewood",
-                  "categories": ["Music"],
-                  "imageUrl": "https://s1.ticketm.net/dam/a/c40/e0f4dedd-b435-4b8b-8fd0-e73e47e93c40_851341_CUSTOM.jpg",
-                  "url": "https://www.ticketmaster.com/eagles-inglewood-california-10-16-2021/event/09005745E5F94CFD",
-                  "distance": 0.0
-              }
-        }
-  }
-  ```
+    ```json
+    {
+        "userId": "5f6bdea318d55516a3871a72",
+        "firstName": "yijie",
+        "items": {
+            "vv1AaZAqAGkdPXfSW": {
+                "description": "Active!",
+                "item": {
+                    "itemId": "vv1AaZAqAGkdPXfSW",
+                    "name": "Eagles",
+                    "description": null,
+                    "address": "3900 W Manchester Blvd. Inglewood",
+                    "categories": ["Music"],
+                    "imageUrl": "https://s1.ticketm.net/dam/a/c40/e0f4dedd-b435-4b8b-8fd0-e73e47e93c40_851341_CUSTOM.jpg",
+                    "url": "https://www.ticketmaster.com/eagles-inglewood-california-10-16-2021/event/09005745E5F94CFD",
+                    "distance": 0.0
+                }
+          }
+    }
+    ```
 
-  
+    
 
 ### API
 
@@ -140,6 +141,4 @@
   * `Get - recom/{lat}/{lon}/{user_id}` ---- Call **`search`**service,  recommend event based on **geo-location**
   * `Get - recom/state/{state_code}/{user_id}` ---- Call  **`search`**service,  recommend event based on **state-code**
   * `Get - recom/state/{city}/{user_id}` ---- Call  **`search`**service,  recommend event based on **city**
-
-
 
