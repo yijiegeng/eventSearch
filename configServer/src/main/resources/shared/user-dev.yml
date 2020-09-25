@@ -1,0 +1,27 @@
+server:
+  port: 8010
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# local database
+spring:
+  data:
+    mongodb:
+      database: eventSearch_project
+      host: 127.0.0.1
+      port: 27017
+
+# mongodb atlas
+#spring:
+#  data:
+#    mongodb:
+#      #mongodb+srv://yijie:<password>@cluster0.0fouq.mongodb.net/<dbname>?retryWrites=true&w=majority
+#      uri: mongodb+srv://yijie:Gyj19950102@cluster0.0fouq.mongodb.net/event_search?retryWrites=true&w=majority
+#      database: event_search
+
+
