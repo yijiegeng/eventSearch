@@ -1,7 +1,6 @@
 package com.yijie.controller;
 
 import com.yijie.entity.Item;
-import com.yijie.repository.ItemRepository;
 import com.yijie.service.TicketMasterAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,6 @@ import java.util.List;
 @RequestMapping("/search")
 public class SearchHandler {
     @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
     private TicketMasterAPI ticketMasterAPI;
 
 
@@ -25,9 +22,8 @@ public class SearchHandler {
      */
     @GetMapping("/{lat}/{lon}")
     public List<Item> getItems(@PathVariable("lat") double lat, @PathVariable("lon") double lon) {
-        List<Item> items = ticketMasterAPI.search(lat, lon, null, null,null);
-        saveItems(items);
-        return items;
+        return ticketMasterAPI.search(
+                lat, lon, null, null,null, null);
     }
 
 
@@ -36,9 +32,8 @@ public class SearchHandler {
      */
     @GetMapping("/state/{state_code}")
     public List<Item> getItemsByState(@PathVariable("state_code") String stateCode){
-        List<Item> items = ticketMasterAPI.search(null, null, null, stateCode,null);
-        saveItems(items);
-        return items;
+        return ticketMasterAPI.search(
+                null, null, null, stateCode,null, null);
     }
 
     /**
@@ -46,15 +41,15 @@ public class SearchHandler {
      */
     @GetMapping("/city/{city_name}")
     public List<Item> getItemsByCity(@PathVariable("city_name") String city){
-        List<Item> items = ticketMasterAPI.search(null, null, null, null,city);
-        saveItems(items);
-        return items;
+        return ticketMasterAPI.search(
+                null, null, null, null, city, null);
     }
 
 
-    /**
+    /********************************************************
+     *
      *      --This API is for Recommendation--
-     *  Search based on category and geo-point/state/city and
+     *  Search based on category and geo-point/state/city
      */
     @GetMapping("/term/{lat}/{lon}/{term}/{state_code}/{city}")
     public List<Item> getItemsByTerm(@PathVariable("lat") Double lat,
@@ -67,14 +62,18 @@ public class SearchHandler {
         if(lon == 0.0) lon = null;
         if(stateCode.equals("0")) stateCode = null;
         if(city.equals("0")) city = null;
-        List<Item> items = ticketMasterAPI.search(lat, lon, term, stateCode,city);
+        List<Item> items = ticketMasterAPI.search(lat, lon, term, stateCode, city, null);
         return items;
     }
 
-    /**
-     *  Helper function
+    /********************************************************
+     *
+     *  --This API is for "user" service--
+     *  Search based on event-id
      */
-    private void saveItems(List<Item> items){
-        itemRepository.saveAll(items);
+    @GetMapping("/id/{id}")
+    public List<Item> getItemsByid(@PathVariable("id") String id){
+        return ticketMasterAPI.search(
+                null, null, null, null, null, id);
     }
 }
